@@ -4,24 +4,28 @@ import Answer from './Answer';
 class Question extends React.Component {
    constructor(props){
         super(props);
-        this.state = {tipoQuestao: "aberta"};
+        this.state = {
+            tipoQuestao: "aberta",
+            privacidade: "",
+            pergunta: "",
+            respostas: []
+        };
         this.handleChange = this.handleChange.bind(this);
    }
 
    handleChange(event) {
     this.setState({tipoQuestao: event.target.value});
+    if(event.target.value == "fechada"){
+        this.setState({ respostas: [<Answer/>]})
+    }
+    else{
+        this.setState({ respostas: ""})
+    }   
   }
 
     render(){
         const tipoQuestao = this.state.tipoQuestao;
-        let respostas;
-
-        if(tipoQuestao == "fechada"){
-            respostas = <Answer />;
-        }
-        else{
-            respostas = null;
-        }
+        
         return (
             <div className="container">
                 <p><label>Nome questão: <input type="text"/></label></p>
@@ -32,7 +36,7 @@ class Question extends React.Component {
                     <option value="fechada">Fechada</option>
                 </select>
                 </label></p>
-                {respostas}
+                { this.state.respostas }
             </div>
         );
     }
