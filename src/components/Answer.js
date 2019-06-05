@@ -33,20 +33,17 @@ class Answer extends React.Component{
   }
 
   handleInputChange = idx => evt =>{
-    const novasAlternativas = this.state.alternativas.map((alternativa, sidx) => {
-      if (idx !== sidx) return alternativa;
-      return { ...alternativa, textoAlternativa: evt.target.value };
-    });
 
-    this.setState({ alternativas: novasAlternativas });  
+    const text = evt.target.value;
+    const fieldName = evt.target.name;
+    this.props.onChange(this.props.id, fieldName, text, idx); 
   }
   
   render(){
       let inputResposta;
-      console.log(this.state);
-      if(this.state.tipoResposta == "Multipla" || this.state.tipoResposta == "Checkbox"){
-        inputResposta = this.state.alternativas.map((alternativa, idx) => 
-          <p>Alternativa <input type="text"  value={ alternativa.textoAlternativa } onChange={this.handleInputChange(idx)} /></p>
+      if(this.props.tipoResposta == "Multipla" || this.props.tipoResposta == "Checkbox"){
+        inputResposta = this.props.respostas.map((resposta, idx) => 
+          <p>Alternativa <input type="text"  name="resposta" onChange={this.handleInputChange(idx)} /></p>
         );
       }
       else{

@@ -4,39 +4,35 @@ import Answer from './Answer';
 class Question extends React.Component {
    constructor(props){
         super(props);
-        this.state = {
-            tipoQuestao: "aberta",
-            privacidade: "",
-            pergunta: "",
-            respostas: []
-        };
+        this.state = {};
         this.handleChange = this.handleChange.bind(this);
    }
 
    handleChange(event) {
-    this.setState({tipoQuestao: event.target.value});
-    if(event.target.value == "fechada"){
-        this.setState({ respostas: [<Answer/>]})
-    }
-    else{
-        this.setState({ respostas: ""})
-    }   
+    const text = event.target.value;
+    const fieldName = event.target.name;
+    this.props.onChange(this.props.id, fieldName, text); 
   }
 
     render(){
-        const tipoQuestao = this.state.tipoQuestao;
-        
+        let output;
+        if(this.props.questao.tipoQuestao == "fechada"){
+            output = <Answer id = { this.props.id } tipoResposta = { this.props.questao.tipoResposta } respostas = { this.props.questao.respostas }
+            onChange = {this.props.onChange}/>
+        }
+        else{
+            output = null;
+        }
         return (
             <div className="container">
-                <p><label>Nome questão: <input type="text"/></label></p>
+                <p><label>Nome questão: <input type="text" name = "nomeQuestao" onChange = { this.handleChange }/></label></p>
                 <p><label>
                 Tipo Questão:
-                <select onChange={ this.handleChange }>
+                <select name = "tipoQuestao" onChange={ this.handleChange }>
                     <option value="aberta">Aberta</option>
                     <option value="fechada">Fechada</option>
-                </select>
-                </label></p>
-                { this.state.respostas }
+                </select></label></p>
+                { output }
             </div>
         );
     }
